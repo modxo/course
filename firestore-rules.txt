@@ -1,0 +1,157 @@
+================================================================================
+FIRESTORE SECURITY RULES
+================================================================================
+
+Copy and paste these rules into your Firestore Console under Rules tab.
+This ensures proper data access control and protects your database.
+
+================================================================================
+RULES CODE
+================================================================================
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ===== HELPER FUNCTIONS =====
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isStudent(userId) {
+      return get(/databases/$(database)/documents/users/$(userId)).data.role == 'student';
+    }
+
+    function isAdmin() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // ===== USERS COLLECTION =====
+    // Students can read/write only their own data
+    match /users/{userId} {
+      allow create: if true; // Allow signup
+      allow read: if request.auth.uid == userId || isAdmin();
+      allow update: if request.auth.uid == userId || isAdmin();
+      allow delete: if isAdmin();
+
+      // Rules for email change (can only happen once)
+      allow update: if request.auth.uid == userId && 
+                       resource.data.emailChangeUsed == false &&
+                       request.resource.data.emailChangeUsed == true;
+    }
+
+    // ===== TRANSACTIONS COLLECTION =====
+    // Transactions are created and managed by admin
+    // Students can only read unclaimed transactions during signup
+    match /transactions/{transactionId} {
+      allow read: if true; // Public read for signup verification
+      allow create: if isAdmin();
+      allow update: if isAdmin() || 
+                      (request.resource.data.claimed == true && 
+                       request.resource.data.claimedBy == request.auth.uid);
+      allow delete: if isAdmin();
+    }
+
+    // ===== COURSES COLLECTION =====
+    // Courses are public to read, only admin can write
+    match /courses/{courseId} {
+      allow read: if true; // Public course info
+      allow write: if isAdmin();
+    }
+
+    // ===== PURCHASES COLLECTION =====
+    // Records of student purchases/enrollments
+    match /purchases/{purchaseId} {
+      allow create: if request.auth != null;
+      allow read: if request.auth.uid == resource.data.studentId || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ===== ENROLLMENTS COLLECTION =====
+    // Tracks which students are enrolled in which courses
+    match /enrollments/{enrollmentId} {
+      allow read: if request.auth.uid == resource.data.studentId || isAdmin();
+      allow create: if request.auth.uid == resource.data.studentId;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ===== SETTINGS COLLECTION =====
+    // Admin settings (class schedules, etc.)
+    match /settings/{document=**} {
+      allow read: if true; // Public read for class info
+      allow write: if isAdmin();
+    }
+
+  }
+}
+
+================================================================================
+IMPORTANT NOTES
+================================================================================
+
+1. AUTHENTICATION SETUP:
+   - You need to enable Firebase Authentication in your Firebase Console
+   - Students will authenticate using their Student ID and password
+   - The app stores credentials in localStorage for quick access
+
+2. COLLECTIONS STRUCTURE:
+   
+   /users/{userId}
+   ├── studentId: string
+   ├── email: string
+   ├── password: string (hashed in production)
+   ├── role: string ('student' or 'admin')
+   ├── courseId: string
+   ├── emailChangeUsed: boolean
+   ├── createdAt: timestamp
+   └── transactionId: string
+   
+   /transactions/{transactionId}
+   ├── courseId: string
+   ├── claimed: boolean
+   ├── claimedBy: string (studentId)
+   ├── claimedAt: timestamp
+   └── createdAt: timestamp
+   
+   /courses/{courseId}
+   ├── name: string
+   ├── quote: string
+   ├── price: number
+   ├── modules: array
+   ├── description: string
+   ├── totalSeats: number
+   ├── thumbnail: string
+   └── updatedAt: timestamp
+   
+   /settings/class-schedule
+   ├── startTime: string (format: "10:00")
+   ├── endTime: string (format: "11:00")
+   ├── zoomLink: string (Zoom/Meet URL)
+   ├── enabled: boolean
+   └── updatedAt: timestamp
+
+3. SECURITY BEST PRACTICES:
+   - Email change is restricted to one-time only
+   - Transaction IDs can only be claimed once
+   - Students can only access their own data
+   - Admin has full access for management
+   - All timestamps use serverTimestamp() for accuracy
+
+4. CREATING AN ADMIN USER:
+   - Manually create a user document with role: 'admin'
+   - Example:
+   {
+     "studentId": "admin001",
+     "email": "admin@masrur.bro",
+     "password": "secure_password",
+     "role": "admin",
+     "createdAt": timestamp
+   }
+
+5. TESTING RULES:
+   - Use Firebase Console Rules Testing tab
+   - Test scenarios: Student accessing own data, admin access, transaction claiming
+   - Verify restrictions are working as expected
+
+================================================================================

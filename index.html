@@ -1,0 +1,839 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Course Page</title>
+  <link rel="icon" type="image/x-icon" href="favicon.png">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+  <style>
+    @font-face {
+      font-family: "CustomFont";
+      src: url("font.ttf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root{
+      --nav-height:64px;
+      --bg-opacity:0.5;
+      --accent:#ff3b30;
+      --muted:#444;
+      --radius:10px;
+      --shadow:0 6px 18px rgba(0,0,0,0.12);
+      --button-height:44px;
+      --card-max-width:900px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family: "CustomFont", Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background:#f6f7fb;
+      color:#111;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+
+.navbar{
+position:fixed;
+top:0;
+left:0;
+right:0;
+height:var(--nav-height);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 20px;
+background:rgba(255,255,255,0.95);
+border-bottom:1px solid rgba(0,0,0,0.06);
+z-index:50;
+backdrop-filter: blur(4px);
+}
+.navbar .logo{height:44px; object-fit:contain;}
+.navbar .nav-right{
+display:flex;
+align-items:center;
+gap:12px;
+}
+.btn-login{
+  font-family: "CustomFont", Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+background:var(--accent);
+color:#fff;
+border:0;
+height:36px;
+padding:0 16px;
+border-radius:8px;
+cursor:pointer;
+font-weight:600;
+font-size:14px;
+transition:all .12s ease;
+}
+.btn-login:hover{
+transform:translateY(-2px);
+box-shadow:0 6px 16px rgba(255,59,48,0.2);
+}
+.login-modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.5);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:300;
+}
+.login-modal.active{display:flex;}
+.login-card{
+background:#fff;
+border-radius:12px;
+padding:28px;
+width:100%;
+max-width:380px;
+box-shadow:0 20px 60px rgba(0,0,0,0.3);
+}
+.login-card h3{
+font-size:20px;
+margin:0 0 8px 0;
+color:#111;
+}
+.login-card .subtitle{
+font-size:13px;
+color:#666;
+margin-bottom:20px;
+}
+.login-form{
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+.form-group{
+display:flex;
+flex-direction:column;
+gap:6px;
+}
+.form-group label{
+font-size:13px;
+font-weight:600;
+color:#111;
+}
+.form-group input{
+padding:10px 12px;
+border:1px solid #ddd;
+border-radius:8px;
+font-size:14px;
+font-family:inherit;
+}
+.form-group input:focus{
+outline:none;
+border-color:var(--accent);
+box-shadow:0 0 0 3px rgba(255,59,48,0.1);
+}
+.login-error{
+padding:10px 12px;
+background:#fee;
+border:1px solid #fcc;
+border-radius:8px;
+color:#c33;
+font-size:13px;
+display:none;
+}
+.login-error.show{display:block;}
+.btn-login-submit{
+  font-family: "CustomFont", Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+background:linear-gradient(90deg,#ff6b6b,#ff3b30);
+color:#fff;
+border:0;
+height:44px;
+border-radius:8px;
+cursor:pointer;
+font-weight:600;
+font-size:15px;
+margin-top:8px;
+transition:all .12s ease;
+}
+.btn-login-submit:hover{
+transform:translateY(-2px);
+box-shadow:0 8px 20px rgba(255,59,48,0.2);
+}
+.login-close{
+position:absolute;
+top:12px;
+right:12px;
+background:transparent;
+border:0;
+font-size:20px;
+cursor:pointer;
+color:#666;
+}
+
+    .page{
+      width:100%;
+      padding-top:calc(var(--nav-height) + 24px);
+      display:flex;
+      justify-content:center;
+      padding-bottom:48px;
+    }
+
+    .card{
+      width:100%;
+      max-width:var(--card-max-width);
+      position:relative;
+      border-radius:var(--radius);
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      background:#fff;
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background-image: url('background.jpg');
+      background-size:cover;
+      background-position:center;
+      opacity:var(--bg-opacity);
+      z-index:0;
+      pointer-events:none;
+      filter:brightness(0.95);
+    }
+
+    .card-content{
+      position:relative;
+      z-index:1;
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:12px;
+    }
+
+    .thumb-wrap{
+      width:100%;
+      max-width:860px;
+      border-radius:8px;
+      overflow:hidden;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      box-shadow:0 8px 20px rgba(0,0,0,0.08);
+      cursor:pointer;
+      background:linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.02));
+    }
+    .thumb{
+      width:100%;
+      height:auto;
+      display:block;
+      aspect-ratio:16/9;
+      object-fit:cover;
+      background:#ddd;
+      transition:transform .18s ease;
+    }
+    .thumb-wrap:hover .thumb{ transform:scale(1.02); }
+
+    .course-details{
+      width:100%;
+      max-width:860px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:8px 12px;
+      background:rgba(255,255,255,0.6);
+      border-radius:8px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.03);
+    }
+    .course-meta{ display:flex; flex-direction:column; gap:6px; }
+    .course-title{ font-size:18px; font-weight:700; color:#111; }
+    .course-sub{ font-size:14px; color:#666; }
+    .course-price{ font-size:16px; font-weight:700; color:var(--accent); }
+
+    .actions{
+      width:100%;
+      max-width:420px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      margin-top:6px;
+    }
+    .btn{
+      font-family: "CustomFont", Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      height:var(--button-height);
+      border-radius:8px;
+      border:0;
+      cursor:pointer;
+      font-weight:600;
+      font-size:15px;
+      transition:transform .12s ease, box-shadow .12s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:0 14px;
+    }
+    .btn-wishlist{
+      background:#fff;
+      color:var(--muted);
+      border:1px solid rgba(0,0,0,0.08);
+      box-shadow:0 4px 12px rgba(0,0,0,0.04);
+    }
+    .btn-buy{
+      background:linear-gradient(90deg,#ff6b6b,#ff3b30);
+      color:#fff;
+      box-shadow:0 8px 20px rgba(255,59,48,0.18);
+    }
+
+    .progress-wrap{
+      width:100%;
+      max-width:860px;
+      margin-top:14px;
+      padding:10px 12px;
+      background:rgba(255,255,255,0.6);
+      border-radius:8px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.03);
+    }
+    .progress-label{ font-size:14px; color:#333; margin-bottom:8px; }
+    .progress-bar{
+      width:100%;
+      height:14px;
+      background:linear-gradient(90deg,#eee,#f3f3f3);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .progress-fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,#4caf50,#2ecc71);
+      border-radius:999px;
+      transition:width .6s ease;
+    }
+    .progress-stats{ font-size:13px; color:#666; margin-top:8px; text-align:right; }
+
+    .bottom-sheet{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:-100%;
+      height:80vh;
+      background:#fff;
+      border-top-left-radius:12px;
+      border-top-right-radius:12px;
+      box-shadow:0 -12px 40px rgba(0,0,0,0.18);
+      z-index:200;
+      transition:transform .36s cubic-bezier(.2,.9,.2,1);
+      transform:translateY(100%);
+      display:flex;
+      flex-direction:column;
+      padding:18px;
+      gap:12px;
+    }
+    .bottom-sheet.open{ transform:translateY(0%); bottom:0; }
+
+    .sheet-handle{ width:48px; height:6px; background:#e6e6e6; border-radius:6px; margin:0 auto; }
+    .sheet-title{ font-weight:700; font-size:18px; text-align:center; margin-top:6px; }
+    .sheet-body{ flex:1; overflow:auto; padding:6px 4px; display:flex; flex-direction:column; gap:12px; }
+    .input{ width:100%; padding:10px 12px; border-radius:8px; border:1px solid #ddd; font-size:15px; }
+
+    .success-wrap{ display:none; align-items:center; justify-content:center; gap:12px; flex-direction:column; padding:12px; }
+    .success-wrap.show{ display:flex; }
+    .checkmark{
+      width:84px; height:84px; border-radius:50%;
+      background:linear-gradient(90deg,#4caf50,#2ecc71);
+      display:flex; align-items:center; justify-content:center; color:#fff; font-size:36px;
+      transform:scale(0.6); opacity:0; transition:transform .45s cubic-bezier(.2,.9,.2,1), opacity .45s ease;
+    }
+    .checkmark.show{ transform:scale(1); opacity:1; }
+    .credentials{ background:#f8f8f8; padding:12px; border-radius:8px; width:100%; text-align:left; }
+
+    .modal-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,0.45); display:none; align-items:center; justify-content:center; z-index:150; }
+    .modal-backdrop.open{ display:flex; }
+    .modal{ width:100%; max-width:760px; max-height:80vh; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.3); display:flex; flex-direction:column; }
+    .modal-header{ padding:12px 16px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; }
+    .modal-body{ padding:12px 16px; overflow:auto; display:flex; flex-direction:column; gap:12px; }
+    .module{ padding:10px; border-radius:8px; background:#fafafa; border:1px solid #f0f0f0; display:flex; gap:12px; align-items:center; justify-content:space-between; }
+
+    @media (max-width:520px){
+      .card-content{padding:14px}
+      .course-details{flex-direction:column; align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar" role="banner">
+    <img src="logo.png" alt="Logo" class="logo" />
+    <div class="nav-right">
+      <button class="btn-login" id="navLoginBtn" type="button">Login</button>
+    </div>
+  </header>
+
+  <!-- Login Modal -->
+  <div class="login-modal" id="loginModal">
+    <div class="login-card" style="position:relative;">
+      <button class="login-close" id="loginClose" type="button" aria-label="Close">×</button>
+      <h3>Student Login</h3>
+      <p class="subtitle">Enter your credentials to access the course</p>
+      <form class="login-form" id="loginForm">
+        <div class="form-group">
+          <label for="loginStudentId">Student ID or Email</label>
+          <input id="loginStudentId" type="text" placeholder="ID or email@masrur.bro" required />
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input id="loginPassword" type="password" placeholder="Your password" required />
+        </div>
+        <div class="login-error" id="loginError"></div>
+        <button class="btn-login-submit" id="loginSubmit" type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <main class="page" role="main">
+    <section class="card" aria-labelledby="card-title">
+      <div class="card-content">
+        <h2 id="card-title" style="display:none">Course thumbnail card</h2>
+
+        <div class="thumb-wrap" id="thumbWrap" tabindex="0" role="button" aria-pressed="false" aria-label="Open course details">
+          <img src="tumbnail.png" alt="Video thumbnail" class="thumb" id="courseThumb" />
+        </div>
+
+        <div class="course-details">
+          <div class="course-meta">
+            <div class="course-title" id="courseName">Course name</div>
+            <div class="course-sub" id="courseQuote">Course quote</div>
+          </div>
+          <div class="course-price" id="coursePrice">$0.00</div>
+        </div>
+
+        <div class="actions" role="group" aria-label="Actions">
+          <button class="btn btn-wishlist" id="wishBtn" type="button" title="Add to wishlist">
+            <i class="fas fa-heart"></i> <span id="wishText">Add to Wish List</span>
+          </button>
+          <button class="btn btn-buy" id="buyBtn" type="button" title="Buy now">
+            <i class="fas fa-shopping-cart"></i> Buy Now
+          </button>
+        </div>
+
+        <div class="progress-wrap" aria-hidden="false">
+          <div class="progress-label">Students purchased</div>
+          <div class="progress-bar" aria-hidden="true">
+            <div class="progress-fill" id="progressFill" style="width:0%"></div>
+          </div>
+          <div class="progress-stats" id="progressStats">0 / 100</div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <div>
+          <div id="modalTitle" style="font-weight:700">Course Details</div>
+          <div style="font-size:13px;color:#666" id="modalSubtitle">Step-by-step modules</div>
+        </div>
+        <button id="closeModal" class="btn" style="background:transparent;color:#666"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div style="font-weight:700">Modules</div>
+        <div id="modulesList"></div>
+        <div style="display:flex;gap:8px;justify-content:center;margin-top:6px">
+          <button id="prevModule" class="btn btn-wishlist"><i class="fas fa-arrow-left"></i> Prev</button>
+          <button id="nextModule" class="btn btn-buy">Next <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-sheet" id="bottomSheet" aria-hidden="true">
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <div class="sheet-title">Complete Purchase</div>
+    <div class="sheet-body">
+      <div style="font-size:14px;color:#333">Enter Transaction ID to verify payment</div>
+      <input id="txInput" class="input" placeholder="Transaction ID" aria-label="Transaction ID" />
+      <div style="font-size:13px;color:#666">After verification you'll receive login credentials for the course.</div>
+
+      <div class="success-wrap" id="successWrap" aria-hidden="true">
+        <div class="checkmark" id="checkmark"><i class="fas fa-check"></i></div>
+        <div style="font-weight:700">Payment Verified</div>
+        <div class="credentials" id="credentialsBox" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="sheet-actions">
+      <button id="verifyBtn" class="btn btn-wishlist"><i class="fas fa-check-circle"></i> Verify</button>
+      <button id="closeSheet" class="btn btn-buy"><i class="fas fa-times"></i> Close</button>
+    </div>
+  </div>
+
+  <!-- Firebase and app script (module) -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+    import {
+      getFirestore, doc, onSnapshot, setDoc, getDoc, collection, addDoc, query, where, getDocs, orderBy, limit, serverTimestamp, updateDoc
+    } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+
+    // Firebase Configuration
+    const firebaseConfig = {
+  apiKey: "AIzaSyAltssiPYhFI83A93X4UUhmx2Ha1PO1AFE",
+  authDomain: "testmasrur.firebaseapp.com",
+  projectId: "testmasrur",
+  storageBucket: "testmasrur.firebasestorage.app",
+  messagingSenderId: "177134422707",
+  appId: "1:177134422707:web:5fe1500727ab2a341f7ec6",
+  measurementId: "G-5KR4F8F8L0"
+};
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Constants
+    const COURSE_DOC = 'courses/course-1'; // document path
+    const COURSE_ID = 'course-1';
+
+    // UI refs
+    const courseNameEl = document.getElementById('courseName');
+    const courseQuoteEl = document.getElementById('courseQuote');
+    const coursePriceEl = document.getElementById('coursePrice');
+    const progressFill = document.getElementById('progressFill');
+    const progressStats = document.getElementById('progressStats');
+    const wishBtn = document.getElementById('wishBtn');
+    const wishText = document.getElementById('wishText');
+    const buyBtn = document.getElementById('buyBtn');
+    const bottomSheet = document.getElementById('bottomSheet');
+    const txInput = document.getElementById('txInput');
+    const verifyBtn = document.getElementById('verifyBtn');
+    const closeSheet = document.getElementById('closeSheet');
+    const successWrap = document.getElementById('successWrap');
+    const checkmark = document.getElementById('checkmark');
+    const credentialsBox = document.getElementById('credentialsBox');
+    const thumbWrap = document.getElementById('thumbWrap');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const closeModal = document.getElementById('closeModal');
+    const modulesList = document.getElementById('modulesList');
+    const prevModule = document.getElementById('prevModule');
+    const nextModule = document.getElementById('nextModule');
+
+    // Local fallback storage keys
+    const LS_WISHLIST = 'wishlist';
+    const LS_PURCHASES = 'purchases';
+
+    // Local state
+    let courseDocRef = null;
+    let adminCourseData = null;
+    let modules = [];
+    let currentModuleIndex = 0;
+
+    // Helpers for local fallback
+    function loadWishlist() {
+      try { return JSON.parse(localStorage.getItem(LS_WISHLIST) || '[]'); } catch(e){ return []; }
+    }
+    function saveWishlist(list) { localStorage.setItem(LS_WISHLIST, JSON.stringify(list)); }
+
+    // Initialize listeners
+    (async function init() {
+      courseDocRef = doc(db, 'courses', 'course-1');
+
+      // Real-time listener for course document
+      onSnapshot(courseDocRef, async (snap) => {
+        if (!snap.exists()) {
+          // If doc doesn't exist, create with defaults
+          await setDoc(courseDocRef, {
+            name: 'Mastering JavaScript',
+            quote: 'From basics to advanced patterns',
+            price: 49.99,
+            transactionId: 'TXN-ABC-001',
+            loginId: 'student123',
+            password: 'pass@123',
+            progressPercent: 25,
+            totalSeats: 100,
+            modules: [
+              {title: 'Introduction & Setup', desc: 'Overview and environment setup'},
+              {title: 'JavaScript Basics', desc: 'Variables, types, functions'},
+              {title: 'DOM & Events', desc: 'Manipulating the DOM'},
+              {title: 'Asynchronous JS', desc: 'Promises, async/await'},
+              {title: 'Advanced Patterns', desc: 'Design patterns and optimization'}
+            ],
+            updatedAt: serverTimestamp()
+          });
+          return;
+        }
+
+        adminCourseData = snap.data();
+        // Update UI fields
+        courseNameEl.textContent = adminCourseData.name || 'Course name';
+        courseQuoteEl.textContent = adminCourseData.quote || '';
+        coursePriceEl.textContent = (adminCourseData.price !== undefined) ? `$${adminCourseData.price}` : '$0.00';
+
+        // Modules
+        modules = adminCourseData.modules || [];
+        currentModuleIndex = 0;
+        renderModules();
+
+        // Progress
+        updateProgressUI();
+
+        // If purchases collection exists, compute real-time count
+        subscribePurchasesCount();
+      }, (err) => {
+        console.error('Course doc listener error', err);
+      });
+
+      // Initialize wishlist UI from localStorage
+      const wishlist = loadWishlist();
+      if (wishlist.includes(COURSE_ID)) {
+        wishText.textContent = 'Added to Wish List';
+      } else {
+        wishText.textContent = 'Add to Wish List';
+      }
+    })();
+
+    // Subscribe to purchases collection to compute progress in real time
+    let purchasesUnsub = null;
+    async function subscribePurchasesCount() {
+      // detach previous if any
+      if (purchasesUnsub) { purchasesUnsub(); purchasesUnsub = null; }
+
+      // Query purchases for this course
+      const purchasesCol = collection(db, 'purchases');
+      // We will compute count by querying where courseId == COURSE_ID
+      // Firestore doesn't have a direct count listener in client SDK v9; we can listen to query snapshots
+      const q = query(purchasesCol, where('courseId', '==', COURSE_ID));
+      purchasesUnsub = onSnapshot(q, (snap) => {
+        const boughtCount = snap.size;
+        // If admin sets totalSeats, use it; otherwise fallback to 100
+        const total = (adminCourseData && adminCourseData.totalSeats) ? adminCourseData.totalSeats : 100;
+        const percent = Math.round((boughtCount / total) * 100);
+        progressFill.style.width = Math.min(100, percent) + '%';
+        progressStats.textContent = `${boughtCount} / ${total}`;
+      }, (err) => {
+        console.error('Purchases listener error', err);
+      });
+    }
+
+    function updateProgressUI() {
+      if (!adminCourseData) return;
+      const percent = Math.max(0, Math.min(100, Number(adminCourseData.progressPercent || 0)));
+      progressFill.style.width = percent + '%';
+      const total = adminCourseData.totalSeats || 100;
+      const bought = Math.round((percent/100) * total);
+      progressStats.textContent = `${bought} / ${total}`;
+    }
+
+    // Wishlist toggle (local)
+    wishBtn.addEventListener('click', () => {
+      const list = loadWishlist();
+      const idx = list.indexOf(COURSE_ID);
+      if (idx === -1) {
+        list.push(COURSE_ID);
+        saveWishlist(list);
+        wishText.textContent = 'Added to Wish List';
+      } else {
+        list.splice(idx,1);
+        saveWishlist(list);
+        wishText.textContent = 'Add to Wish List';
+      }
+    });
+
+    // Buy flow: open bottom sheet
+    buyBtn.addEventListener('click', () => {
+      openBottomSheet();
+    });
+    function openBottomSheet() {
+      successWrap.classList.remove('show');
+      checkmark.classList.remove('show');
+      credentialsBox.innerHTML = '';
+      txInput.value = '';
+      bottomSheet.classList.add('open');
+      bottomSheet.setAttribute('aria-hidden','false');
+    }
+    closeSheet.addEventListener('click', () => {
+      bottomSheet.classList.remove('open');
+      bottomSheet.setAttribute('aria-hidden','true');
+    });
+
+    // Verify transaction ID and create student account
+    verifyBtn.addEventListener('click', async () => {
+      const entered = txInput.value.trim();
+      if (!entered) { alert('Please enter a transaction ID.'); return; }
+      try {
+        // Check if transaction exists and is not claimed
+        const transRef = doc(db, 'transactions', entered);
+        const tranSnap = await getDoc(transRef);
+        
+        if (!tranSnap.exists()) {
+          alert('Invalid Transaction ID. Please check and try again.');
+          return;
+        }
+
+        const tranData = tranSnap.data();
+        if (tranData.claimed === true) {
+          alert('This Transaction ID has already been claimed. Please contact support.');
+          return;
+        }
+
+        // Transaction is valid and unclaimed
+        // Generate student credentials
+        const timestamp = Date.now().toString().slice(-3);
+        const studentId = `student${timestamp}`;
+        const username = studentId; // Username for email
+        const studentEmail = `${username}@masrur.bro`;
+        const tempPassword = 'Pass' + Math.random().toString(36).slice(-8).toUpperCase();
+
+        // Create user document
+        const newUserRef = await addDoc(collection(db, 'users'), {
+          studentId: studentId,
+          email: studentEmail,
+          password: tempPassword,
+          role: 'student',
+          courseId: tranData.courseId || COURSE_ID,
+          emailChangeUsed: false,
+          transactionId: entered,
+          createdAt: serverTimestamp()
+        });
+
+        // Mark transaction as claimed
+        await updateDoc(transRef, {
+          claimed: true,
+          claimedBy: studentId,
+          claimedAt: serverTimestamp()
+        });
+
+        // Show success and credentials
+        successWrap.classList.add('show');
+        checkmark.classList.add('show');
+        credentialsBox.innerHTML = `
+          <div><strong>Student ID:</strong> ${studentId}</div>
+          <div><strong>Email:</strong> ${studentEmail}</div>
+          <div><strong>Password:</strong> ${tempPassword}</div>
+          <div style="margin-top:12px;padding:8px;background:#fffacd;border-left:3px solid #ff9800;font-size:13px">
+            <strong>Save your credentials!</strong> Change your password after first login.
+          </div>
+        `;
+
+      } catch (err) {
+        console.error('Verification error', err);
+        alert('Verification failed. Please try again.');
+      }
+    });
+
+ // Modal & modules
+    function renderModules() {
+      modulesList.innerHTML = '';
+      modules.forEach((m, idx) => {
+        const el = document.createElement('div');
+        el.className = 'module';
+        el.style.opacity = (idx === currentModuleIndex) ? '1' : '0.6';
+        el.innerHTML = `
+          <div style="display:flex;gap:12px;align-items:center">
+            <div style="width:36px;height:36px;border-radius:6px;background:#fff;display:flex;align-items:center;justify-content:center;border:1px solid #eee">
+              <i class="fas fa-book"></i>
+            </div>
+            <div>
+              <div style="font-weight:600">${m.title}</div>
+              <div style="font-size:13px;color:#666">${m.desc}</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:${idx===currentModuleIndex?'#2ecc71':'#999'}">${idx===currentModuleIndex?'Current':'Locked'}</div>
+        `;
+        modulesList.appendChild(el);
+      });
+    }
+
+    thumbWrap.addEventListener('click', openModal);
+    thumbWrap.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') openModal(); });
+
+    function openModal() {
+      modalBackdrop.classList.add('open');
+      modalBackdrop.setAttribute('aria-hidden','false');
+    }
+    closeModal.addEventListener('click', closeModalFn);
+    modalBackdrop.addEventListener('click', (e) => { if (e.target === modalBackdrop) closeModalFn(); });
+    function closeModalFn() { modalBackdrop.classList.remove('open'); modalBackdrop.setAttribute('aria-hidden','true'); }
+
+    prevModule.addEventListener('click', () => {
+      if (currentModuleIndex > 0) currentModuleIndex--;
+      renderModules();
+    });
+    nextModule.addEventListener('click', () => {
+      if (currentModuleIndex < modules.length - 1) currentModuleIndex++;
+      renderModules();
+    });
+
+    // Login functionality
+    const navLoginBtn = document.getElementById('navLoginBtn');
+    const loginModal = document.getElementById('loginModal');
+    const loginClose = document.getElementById('loginClose');
+    const loginForm = document.getElementById('loginForm');
+    const loginSubmit = document.getElementById('loginSubmit');
+    const loginError = document.getElementById('loginError');
+
+    navLoginBtn.addEventListener('click', () => {
+      loginModal.classList.add('active');
+    });
+
+    loginClose.addEventListener('click', () => {
+      loginModal.classList.remove('active');
+    });
+
+    loginModal.addEventListener('click', (e) => {
+      if (e.target === loginModal) {
+        loginModal.classList.remove('active');
+      }
+    });
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loginError.classList.remove('show');
+      loginError.textContent = '';
+
+      const studentIdOrEmail = document.getElementById('loginStudentId').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      try {
+        // Query for student by ID or email
+        let q = query(collection(db, 'users'), where('role', '==', 'student'));
+        const snapshot = await getDocs(q);
+        
+        let user = null;
+        for (const doc of snapshot.docs) {
+          const data = doc.data();
+          if (data.studentId === studentIdOrEmail || data.email === studentIdOrEmail) {
+            // For now, simple password check (in production, use proper hashing)
+            if (data.password === password) {
+              user = { id: doc.id, ...data };
+              break;
+            }
+          }
+        }
+
+        if (user) {
+          // Save to localStorage and redirect
+          localStorage.setItem('auth_token', JSON.stringify(user));
+          loginModal.classList.remove('active');
+          loginForm.reset();
+          window.location.href = 'dashboard.html';
+        } else {
+          loginError.textContent = 'Invalid Student ID/Email or Password';
+          loginError.classList.add('show');
+        }
+      } catch (err) {
+        console.error('Login error:', err);
+        loginError.textContent = 'Login failed. Please try again.';
+        loginError.classList.add('show');
+      }
+    });
+
+    // Fallback: if Firestore is not configured or fails, keep local behavior
+    window.addEventListener('error', (e) => {
+      console.warn('Unhandled error', e);
+    });
+  </script>
+</body>
+</html>
