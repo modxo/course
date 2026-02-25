@@ -64,7 +64,7 @@ gap:12px;
 }
 .btn-login{
   font-family: "CustomFont", Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-background:var(--accent);
+background:#000;
 color:#fff;
 border:0;
 height:36px;
@@ -77,7 +77,7 @@ transition:all .12s ease;
 }
 .btn-login:hover{
 transform:translateY(-2px);
-box-shadow:0 6px 16px rgba(255,59,48,0.2);
+box-shadow:0 6px 16px rgba(0,0,0,0.5);
 }
 .login-modal{
 position:fixed;
@@ -87,35 +87,39 @@ display:none;
 align-items:center;
 justify-content:center;
 z-index:300;
+padding:20px;
 }
 .login-modal.active{display:flex;}
 .login-card{
 background:#fff;
-border-radius:12px;
-padding:28px;
+border-radius:16px;
+padding:40px;
 width:100%;
-max-width:380px;
+max-width:480px;
 box-shadow:0 20px 60px rgba(0,0,0,0.3);
+position:relative;
 }
 .login-card h3{
-font-size:20px;
-margin:0 0 8px 0;
+font-size:24px;
+margin:0 0 6px 0;
 color:#111;
+font-weight:700;
 }
 .login-card .subtitle{
-font-size:13px;
+font-size:14px;
 color:#666;
-margin-bottom:20px;
+margin-bottom:28px;
 }
 .login-form{
 display:flex;
 flex-direction:column;
-gap:12px;
+gap:14px;
+margin-bottom:24px;
 }
 .form-group{
 display:flex;
 flex-direction:column;
-gap:6px;
+gap:8px;
 }
 .form-group label{
 font-size:13px;
@@ -123,19 +127,25 @@ font-weight:600;
 color:#111;
 }
 .form-group input{
-padding:10px 12px;
+padding:12px 14px;
 border:1px solid #ddd;
 border-radius:8px;
 font-size:14px;
 font-family:inherit;
+background:#fafafa;
+transition:all .2s ease;
+}
+.form-group input::placeholder{
+color:#999;
 }
 .form-group input:focus{
 outline:none;
 border-color:var(--accent);
+background:#fff;
 box-shadow:0 0 0 3px rgba(255,59,48,0.1);
 }
 .login-error{
-padding:10px 12px;
+padding:12px 14px;
 background:#fee;
 border:1px solid #fcc;
 border-radius:8px;
@@ -146,29 +156,96 @@ display:none;
 .login-error.show{display:block;}
 .btn-login-submit{
   font-family: "CustomFont", Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-background:linear-gradient(90deg,#ff6b6b,#ff3b30);
+background:#000;
 color:#fff;
 border:0;
-height:44px;
-border-radius:8px;
+height:48px;
+border-radius:24px;
 cursor:pointer;
 font-weight:600;
 font-size:15px;
-margin-top:8px;
-transition:all .12s ease;
+transition:all .2s ease;
 }
 .btn-login-submit:hover{
+background:#111;
 transform:translateY(-2px);
-box-shadow:0 8px 20px rgba(255,59,48,0.2);
+box-shadow:0 8px 20px rgba(0,0,0,0.2);
+}
+.login-divider{
+display:flex;
+align-items:center;
+gap:12px;
+margin:28px 0;
+color:#ccc;
+font-size:13px;
+}
+.login-divider::before,
+.login-divider::after{
+content:'';
+flex:1;
+height:1px;
+background:#ddd;
+}
+.social-text{
+text-align:center;
+font-size:13px;
+color:#666;
+margin-bottom:14px;
+}
+.social-buttons{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:16px;
+}
+.social-btn{
+width:38px;
+height:38px;
+border-radius:50%;
+background:#f5f5f5;
+border:1px solid #eee;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+transition:all .2s ease;
+}
+.social-btn:hover{
+background:#fff;
+border-color:#ddd;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+.social-btn img{
+width:38px;
+height:38px;
+border-radius:50%;
+}
+.login-footer{
+text-align:center;
+font-size:11px;
+color:#999;
+margin-top:16px;
+line-height:1.4;
+}
+.login-footer a{
+color:#666;
+text-decoration:none;
+}
+.login-footer a:hover{
+text-decoration:underline;
 }
 .login-close{
 position:absolute;
-top:12px;
-right:12px;
+top:16px;
+right:16px;
 background:transparent;
 border:0;
-font-size:20px;
+font-size:24px;
 cursor:pointer;
+color:#999;
+transition:color .2s ease;
+}
+.login-close:hover{
 color:#666;
 }
 
@@ -283,9 +360,9 @@ color:#666;
       box-shadow:0 4px 12px rgba(0,0,0,0.04);
     }
     .btn-buy{
-      background:linear-gradient(90deg,#ff6b6b,#ff3b30);
+      background:linear-gradient(90deg,#000,#000);
       color:#fff;
-      box-shadow:0 8px 20px rgba(255,59,48,0.18);
+      box-shadow:0 8px 20px rgba(0,0,0,0.2);
     }
 
     .progress-wrap{
@@ -361,6 +438,114 @@ color:#666;
       .card-content{padding:14px}
       .course-details{flex-direction:column; align-items:flex-start}
     }
+
+    footer{
+      width:100%;
+      background:#1a1a1a;
+      color:#fff;
+      padding:40px 20px;
+      margin-top:60px;
+      border-top:1px solid #333;
+    }
+
+    .footer-content{
+      max-width:1200px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:40px;
+    }
+
+    .footer-section h4{
+      font-size:16px;
+      font-weight:700;
+      margin-bottom:16px;
+      color:#fff;
+    }
+
+    .footer-section p{
+      font-size:14px;
+      color:#ccc;
+      line-height:1.6;
+      margin:0;
+    }
+
+    .contact-info{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .contact-item{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      font-size:14px;
+      color:#ccc;
+    }
+
+    .contact-item i{
+      margin-top:2px;
+      color:var(--accent);
+      width:20px;
+      text-align:center;
+    }
+
+    .social-links{
+      display:flex;
+      gap:16px;
+      margin-top:16px;
+    }
+
+    .social-link{
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.1);
+      border:1px solid rgba(255,255,255,0.2);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      cursor:pointer;
+      transition:all .2s ease;
+      text-decoration:none;
+    }
+
+    .social-link:hover{
+      background:var(--accent);
+      border-color:var(--accent);
+      transform:translateY(-3px);
+    }
+
+    .footer-bottom{
+      max-width:1200px;
+      margin:0 auto;
+      padding-top:24px;
+      border-top:1px solid #333;
+      text-align:center;
+      font-size:13px;
+      color:#999;
+      margin-top:32px;
+    }
+
+    .footer-bottom a{
+      color:#ccc;
+      text-decoration:none;
+      margin:0 8px;
+    }
+
+    .footer-bottom a:hover{
+      color:#fff;
+      text-decoration:underline;
+    }
+
+    @media (max-width:768px){
+      .footer-content{
+        grid-template-columns:1fr;
+        gap:24px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -374,22 +559,45 @@ color:#666;
 
   <!-- Login Modal -->
   <div class="login-modal" id="loginModal">
-    <div class="login-card" style="position:relative;">
+    <div class="login-card">
       <button class="login-close" id="loginClose" type="button" aria-label="Close">×</button>
-      <h3>Student Login</h3>
-      <p class="subtitle">Enter your credentials to access the course</p>
+      <h3>Sign in</h3>
+      <p class="subtitle">New user? <a href="#" style="color:#ff3b30;text-decoration:none;font-weight:600;">Create an account</a></p>
       <form class="login-form" id="loginForm">
         <div class="form-group">
-          <label for="loginStudentId">Student ID or Email</label>
-          <input id="loginStudentId" type="text" placeholder="ID or email@masrur.bro" required />
+          <input id="loginStudentId" type="text" placeholder="Email Address" required />
         </div>
         <div class="form-group">
-          <label for="loginPassword">Password</label>
-          <input id="loginPassword" type="password" placeholder="Your password" required />
+          <input id="loginPassword" type="password" placeholder="Password" required />
+        </div>
+        <div style="text-align:right;margin-top:-8px;">
+          <a href="#" style="font-size:13px;color:#666;text-decoration:none;">Forgot password?</a>
         </div>
         <div class="login-error" id="loginError"></div>
         <button class="btn-login-submit" id="loginSubmit" type="submit">Login</button>
       </form>
+
+      <div class="login-divider">or</div>
+
+      <p class="social-text">Join With Your Favorite Social Media Account</p>
+      <div class="social-buttons">
+        <button class="social-btn" type="button" aria-label="Continue with Google">
+          <img src="https://img.freepik.com/premium-vector/google-icon-isolated-white-background_1273375-828.jpg?semt=ais_hybrid&w=740&q=80" alt="Google" />
+        </button>
+        <button class="social-btn" type="button" aria-label="Continue with Facebook">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIRmIXCV9aNNRUyiA-31IKx9tFnJdmJ_sOZEYzn6ttyBFn0WJZNKqOQQs&s=10" alt="Facebook" />
+        </button>
+        <button class="social-btn" type="button" aria-label="Continue with X">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf5X0uBAFv_DofShK7PZCtfateFXLbJu-8aN2XC_iC7w&s=10" alt="X" />
+        </button>
+        <button class="social-btn" type="button" aria-label="Continue with Apple">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT35YXmXqlJhgsGpDxsUfWYnOFdmvazL6NrdhRg6y6_HA&s=10" alt="Apple" />
+        </button>
+      </div>
+
+      <div class="login-footer">
+        By signing in with an account, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy.</a>
+      </div>
     </div>
   </div>
 
@@ -455,7 +663,7 @@ color:#666;
     <div class="sheet-handle" aria-hidden="true"></div>
     <div class="sheet-title">Complete Purchase</div>
     <div class="sheet-body">
-      <div style="font-size:14px;color:#333">Enter Transaction ID to verify payment</div>
+      <div style="font-size:14px;color:#333">Enter Transaction ID to verify payment <a href="howtopay.pdf" style="color:#ff3b30;text-decoration:none;font-weight:600;">how to pay</a></div>
       <input id="txInput" class="input" placeholder="Transaction ID" aria-label="Transaction ID" />
       <div style="font-size:13px;color:#666">After verification you'll receive login credentials for the course.</div>
 
@@ -471,6 +679,72 @@ color:#666;
       <button id="closeSheet" class="btn btn-buy"><i class="fas fa-times"></i> Close</button>
     </div>
   </div>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div class="footer-content">
+      <!-- Contact Section -->
+      <div class="footer-section">
+        <h4>Contact Us</h4>
+        <div class="contact-info">
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Sector 10 Uttara , Dhaka , Bangladesh</span>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-phone"></i>
+            <span>+880 9658011567</span>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <span><a href="mailto:workmasrur@gmail.com" style="color:#ccc;text-decoration:none;">support@masrur.bro</a></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <p><a href="#" style="color:#ccc;text-decoration:none;display:block;margin-bottom:10px;">About Us</a></p>
+        <p><a href="#" style="color:#ccc;text-decoration:none;display:block;margin-bottom:10px;">Courses</a></p>
+        <p><a href="#" style="color:#ccc;text-decoration:none;display:block;margin-bottom:10px;">Blog</a></p>
+        <p><a href="#" style="color:#ccc;text-decoration:none;display:block;margin-bottom:10px;">Support</a></p>
+      </div>
+
+      <!-- Social Media -->
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+        <p>Connect with us on social media to stay updated</p>
+        <div class="social-links">
+          <a href="#" class="social-link" title="Follow on Facebook" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="social-link" title="Follow on Twitter" aria-label="Twitter">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="#" class="social-link" title="Follow on Instagram" aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" class="social-link" title="Follow on LinkedIn" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="#" class="social-link" title="Follow on YouTube" aria-label="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <p style="margin:0;">
+        &copy; 2024 Masrur - Master Course. All rights reserved. | 
+        <a href="#">Privacy Policy</a> | 
+        <a href="#">Terms of Service</a> | 
+        <a href="#">Cookie Policy</a>
+      </p>
+    </div>
+  </footer>
 
   <!-- Firebase and app script (module) -->
   <script type="module">
@@ -1264,7 +1538,7 @@ color:#666;
                 <div class="bkash-payment-instruction">Pay in this number</div>
                 <div class="bkash-payment-number">01885549718</div>
                 <div class="bkash-terms">
-                    Confirm and proceed, <a href="#" onclick="alert('Terms & Conditions'); return false;">terms & conditions</a>
+                    Confirm and proceed, <a href="#" onclick="alert('Money Return Policy : upto 2 hr after request'); return false;">terms & conditions</a>
                 </div>
             </div>
 
