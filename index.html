@@ -3,11 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Course Page</title>
+  <title>masrur - master course</title>
   <link rel="icon" type="image/x-icon" href="favicon.png">
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
     @font-face {
@@ -398,7 +399,7 @@ color:#666;
         <h2 id="card-title" style="display:none">Course thumbnail card</h2>
 
         <div class="thumb-wrap" id="thumbWrap" tabindex="0" role="button" aria-pressed="false" aria-label="Open course details">
-          <img src="tumbnail.png" alt="Video thumbnail" class="thumb" id="courseThumb" />
+          <img src="tumb.svg" alt="Video thumbnail" class="thumb" id="courseThumb" />
         </div>
 
         <div class="course-details">
@@ -835,5 +836,674 @@ color:#666;
       console.warn('Unhandled error', e);
     });
   </script>
+  
+      <style>
+        @font-face {
+            font-family: 'CustomFont';
+            src: url('font.ttf') format('truetype');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'CustomFont', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        /* Floating Button */
+        .bkash-button-container {
+            position: fixed;
+            bottom: 90px;
+            right: 30px;
+            z-index: 999;
+            cursor: pointer;
+        }
+
+        .bkash-float-button {
+            width: 45px;
+            height: 45px;
+            border-radius: 20%;
+            background: linear-gradient(135deg, #e91e8c 0%, #d61d7f 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(233, 30, 140, 0.4);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .bkash-float-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(233, 30, 140, 0.6);
+        }
+
+        .bkash-float-button i {
+            color: white;
+            font-size: 21px;
+        }
+
+        .bkash-float-button span {
+            position: absolute;
+            bottom: -25px;
+            right: 0;
+            background: #e91e8c;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        /* Modal Overlay */
+        .bkash-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bkash-modal-overlay.active {
+            display: flex;
+        }
+
+        /* Modal Container */
+        .bkash-modal {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Modal Header */
+        .bkash-modal-header {
+            padding: 24px;
+            text-align: center;
+            border-bottom: 1px solid #f0f0f0;
+            background: #fafafa;
+        }
+
+        .bkash-logo {
+            height: 60px;
+            margin-bottom: 16px;
+        }
+
+        .bkash-merchant-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .bkash-merchant-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .bkash-merchant-name i {
+            color: #e91e8c;
+            font-size: 20px;
+        }
+
+        .bkash-merchant-id {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .bkash-amount {
+            font-size: 28px;
+            font-weight: bold;
+            color: #e91e8c;
+        }
+
+        /* Modal Content */
+        .bkash-modal-content {
+            padding: 24px;
+        }
+
+        .bkash-payment-section {
+            background: linear-gradient(135deg, #e91e8c 0%, #d61d7f 100%);
+            padding: 24px;
+            border-radius: 8px;
+            color: white;
+            margin-bottom: 24px;
+        }
+
+        .bkash-payment-instruction {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .bkash-payment-number {
+            background: white;
+            color: #333;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+
+        .bkash-terms {
+            font-size: 13px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .bkash-terms a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #e91e8c;
+        }
+
+        .form-group input::placeholder {
+            color: #999;
+        }
+
+        .bkash-error {
+            color: #d32f2f;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .bkash-error.show {
+            display: block;
+        }
+
+        /* Modal Footer */
+        .bkash-modal-footer {
+            padding: 16px 24px;
+            background: #fafafa;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            gap: 12px;
+        }
+
+        .bkash-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .bkash-btn-cancel {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .bkash-btn-cancel:hover {
+            background: #e0e0e0;
+        }
+
+        .bkash-btn-submit {
+            background: #e91e8c;
+            color: white;
+        }
+
+        .bkash-btn-submit:hover {
+            background: #d61d7f;
+        }
+
+        .bkash-btn-submit:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .bkash-loading {
+            display: none;
+            text-align: center;
+            padding: 12px;
+        }
+
+        .bkash-spinner {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #e91e8c;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Footer Info */
+        .bkash-footer-info {
+            padding: 16px 24px;
+            text-align: center;
+            background: white;
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .bkash-footer-info i {
+            color: #e91e8c;
+            margin-right: 4px;
+        }
+
+        .bkash-success {
+            display: none;
+            text-align: center;
+            padding: 24px;
+            color: #27ae60;
+        }
+
+        .bkash-success.show {
+            display: block;
+        }
+
+        .bkash-success i {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .bkash-success-message {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .bkash-transaction-id-box {
+            background: #f0f8f5;
+            border: 2px solid #27ae60;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+
+        .bkash-transaction-id-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .bkash-transaction-id-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e91e8c;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+        }
+
+        .bkash-copy-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .bkash-copy-btn:hover {
+            background: #229954;
+        }
+
+        @media (max-width: 480px) {
+            .bkash-button-container {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .bkash-modal {
+                width: 95%;
+                max-width: none;
+            }
+
+            .bkash-payment-section {
+                padding: 16px;
+            }
+
+            .bkash-amount {
+                font-size: 24px;
+            }
+        }
+    </style>
+    
+    
+    <!-- Floating Button -->
+<div class="bkash-button-container">
+    <div class="bkash-float-button" id="bkashButton">
+        <i class="fas fa-cart-shopping"></i>
+        <span>bKash Pay</span>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="bkash-modal-overlay" id="bkashModalOverlay">
+    <div class="bkash-modal">
+        <!-- Header -->
+        <div class="bkash-modal-header">
+            <img src="bkashlogo.svg" alt="bKash" class="bkash-logo">
+            
+            <div class="bkash-merchant-info">
+                <div>
+                    <div class="bkash-merchant-name">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="merchantName">masrur</span>
+                    </div>
+                    <div class="bkash-merchant-id">Inv No: <span id="invoiceId"></span></div>
+                </div>
+                <div class="bkash-amount">৳<span id="amount">1325</span></div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="bkash-modal-content">
+            <div class="bkash-payment-section">
+                <div class="bkash-payment-instruction">Pay in this number</div>
+                <div class="bkash-payment-number">01885549718</div>
+                <div class="bkash-terms">
+                    Confirm and proceed, <a href="#" onclick="alert('Terms & Conditions'); return false;">terms & conditions</a>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <form id="bkashForm">
+                <div class="form-group">
+                    <label for="transactionId">Enter Transaction ID</label>
+                    <input 
+                        type="text" 
+                        id="transactionId" 
+                        name="transactionId" 
+                        placeholder="Enter your transaction ID"
+                        required
+                    >
+                    <div class="bkash-error" id="transactionError"></div>
+                </div>
+
+                <div class="bkash-loading" id="loadingSpinner">
+                    <div class="bkash-spinner"></div>
+                    <span>Verifying...</span>
+                </div>
+
+                <div class="bkash-success" id="successMessage">
+                    <i class="fas fa-check-circle"></i>
+                    <div class="bkash-success-message">Payment verified successfully!</div>
+                    <div class="bkash-transaction-id-box">
+                        <div class="bkash-transaction-id-label">Your Transaction ID</div>
+                        <div class="bkash-transaction-id-value" id="newTransactionId">Loading...</div>
+                        <button type="button" class="bkash-copy-btn" id="copyBtn">Copy ID</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="bkash-modal-footer" id="modalFooter">
+            <button class="bkash-btn bkash-btn-cancel" id="cancelBtn">Cancel</button>
+            <button class="bkash-btn bkash-btn-submit" id="submitBtn">Confirm</button>
+        </div>
+
+        <div class="bkash-footer-info">
+            <i class="fas fa-phone"></i> 16247
+            <br>
+            © 2026 bKash, All Rights Reserved
+        </div>
+    </div>
+</div>
+
+
+<script type="module">
+    // Import Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getDatabase, ref, child, get, push, set } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+
+    // Configure Firebase (Replace with your config)
+    const firebaseConfig = {
+  apiKey: "AIzaSyCbnosoOoNBSKMYzkygBMb03iubtiGXIpY",
+  authDomain: "bkashcustom-4846d.firebaseapp.com",
+  projectId: "bkashcustom-4846d",
+  storageBucket: "bkashcustom-4846d.firebasestorage.app",
+  messagingSenderId: "26515179571",
+  appId: "1:26515179571:web:0ccbd382bdadc8525dfb46",
+  measurementId: "G-F5ST4BM6L7"
+};
+
+    // Validate Firebase config
+    if (!firebaseConfig.apiKey || firebaseConfig.apiKey.includes("YOUR_") || !firebaseConfig.projectId || firebaseConfig.projectId.includes("YOUR_")) {
+        console.error("[v0] Firebase config not updated! Please follow FIREBASE_SETUP.md");
+        alert("⚠️ Firebase configuration required!\n\nPlease update the Firebase config in bkash-widget.html\n\nSee FIREBASE_SETUP.md for instructions.");
+    }
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    
+    console.log("[v0] Firebase widget initialized successfully");
+
+    // DOM Elements
+    const bkashButton = document.getElementById('bkashButton');
+    const modalOverlay = document.getElementById('bkashModalOverlay');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const transactionInput = document.getElementById('transactionId');
+    const transactionError = document.getElementById('transactionError');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const successMessage = document.getElementById('successMessage');
+    const modalFooter = document.getElementById('modalFooter');
+    const bkashForm = document.getElementById('bkashForm');
+
+    // Generate unique invoice ID
+    function generateInvoiceId() {
+        const timestamp = Date.now().toString(36);
+        const random = Math.random().toString(36).substr(2, 5);
+        return timestamp + random;
+    }
+
+    // Open Modal
+    bkashButton.addEventListener('click', () => {
+        modalOverlay.classList.add('active');
+        const invoiceId = generateInvoiceId();
+        document.getElementById('invoiceId').textContent = invoiceId;
+        resetForm();
+    });
+
+    // Close Modal
+    function closeModal() {
+        modalOverlay.classList.remove('active');
+    }
+
+    // Close on overlay click
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+            closeModal();
+        }
+    });
+
+    // Cancel button
+    cancelBtn.addEventListener('click', closeModal);
+
+    // Reset Form
+    function resetForm() {
+        bkashForm.reset();
+        transactionError.classList.remove('show');
+        transactionError.textContent = '';
+        loadingSpinner.style.display = 'none';
+        successMessage.classList.remove('show');
+        modalFooter.style.display = 'flex';
+        submitBtn.disabled = false;
+    }
+
+    // Verify Transaction
+    async function verifyTransaction(transactionId) {
+        try {
+            loadingSpinner.style.display = 'block';
+            submitBtn.disabled = true;
+
+            const dbRef = ref(database);
+            const snapshot = await get(child(dbRef, 'validTransactions/' + transactionId));
+
+            if (snapshot.exists()) {
+                const transactionData = snapshot.val();
+                
+                // Check if transaction is already used
+                if (transactionData.status === 'used') {
+                    loadingSpinner.style.display = 'none';
+                    submitBtn.disabled = false;
+                    transactionError.classList.add('show');
+                    transactionError.textContent = 'This transaction ID has already been used.';
+                    return;
+                }
+
+                // Transaction is valid and unused
+                loadingSpinner.style.display = 'none';
+                transactionError.classList.remove('show');
+                modalFooter.style.display = 'none';
+                
+                // Get the next transaction ID assigned by admin
+                const newTransactionId = transactionData.nextTransactionId || 'TXN-' + Date.now();
+                document.getElementById('newTransactionId').textContent = newTransactionId;
+                
+                successMessage.classList.add('show');
+
+                // Mark this transaction as used
+                await set(ref(database, 'validTransactions/' + transactionId + '/status'), 'used');
+                await set(ref(database, 'validTransactions/' + transactionId + '/usedAt'), new Date().toISOString());
+
+                // Log successful transaction
+                const invoice = document.getElementById('invoiceId').textContent;
+                await set(ref(database, 'completedTransactions/' + transactionId), {
+                    transactionId: transactionId,
+                    invoiceId: invoice,
+                    timestamp: new Date().toISOString(),
+                    amount: document.getElementById('amount').textContent,
+                    newTransactionId: newTransactionId
+                });
+
+                // Close after 4 seconds (user can see the new ID)
+                setTimeout(() => {
+                    closeModal();
+                }, 4000);
+            } else {
+                // Invalid transaction
+                loadingSpinner.style.display = 'none';
+                submitBtn.disabled = false;
+                transactionError.classList.add('show');
+                transactionError.textContent = 'Invalid transaction ID. Please check and try again.';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            loadingSpinner.style.display = 'none';
+            submitBtn.disabled = false;
+            transactionError.classList.add('show');
+            transactionError.textContent = 'Error verifying transaction. Please try again.';
+        }
+    }
+
+    // Submit button
+    submitBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const transactionId = transactionInput.value.trim();
+
+        if (!transactionId) {
+            transactionError.classList.add('show');
+            transactionError.textContent = 'Please enter a transaction ID';
+            return;
+        }
+
+        verifyTransaction(transactionId);
+    });
+
+    // Allow Enter key
+    transactionInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            submitBtn.click();
+        }
+    });
+
+    // Clear error on input
+    transactionInput.addEventListener('input', () => {
+        transactionError.classList.remove('show');
+        transactionError.textContent = '';
+    });
+
+    // Copy button functionality
+    const copyBtn = document.getElementById('copyBtn');
+    const newTransactionIdElement = document.getElementById('newTransactionId');
+    
+    copyBtn.addEventListener('click', () => {
+        const textToCopy = newTransactionIdElement.textContent;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+        });
+    });
+</script>
 </body>
 </html>
